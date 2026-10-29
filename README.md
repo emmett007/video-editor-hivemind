@@ -26,13 +26,29 @@ log/
   Edit-Log.md              starter log with the line format
 ```
 
-## Setup
+## Install in 5 minutes
 
-1. Premiere bridge: these skills drive Premiere through the open-source **leancoderkavy premiere-pro-mcp** (CEP panel + MCP server) plus computer use for panels with no API. Install the bridge per its README; Anthropic's `adobe-premiere-after-effects` skill covers the general plumbing.
-2. Put `log/Edit-Log.md` on the drive your footage lives on and set its path in `video-editor-hivemind` section 0.
-3. Add `video-editor-hivemind` and `format-template` as skills in Claude (Cowork: Customize → Skills; Claude Code: `.claude/skills/<name>/SKILL.md`).
-4. Copy `format-template` to a new skill per format you cut. Fill in only what is different about that format. Leave the examples as reading material.
-5. Replace every `<DRIVE>`, `<channel>`, `<main display name>` placeholder, and rewrite Hivemind section 9 (preferences) in your own words.
+**1. The skills (copy and paste).** Open any `SKILL.md` in this repo, paste it into Claude and say "save this as a skill"; Claude offers a card to save it. In Claude Code, drop the folders into `.claude/skills/`. Start with `video-editor-hivemind` and `format-template`.
+
+**2. The Premiere bridge (the one real install).** The Hivemind drives Premiere through the open-source [leancoderkavy/premiere-pro-mcp](https://github.com/leancoderkavy/premiere-pro-mcp) (MIT): a local MCP server plus a CEP panel inside Premiere. If you already have it, skip this.
+
+```
+npm install -g premiere-pro-mcp
+premiere-pro-mcp --install-cep      # quit Premiere first
+premiere-pro-mcp --doctor
+```
+
+Then add the server to your client. Claude Desktop: Settings › Extensions › Advanced settings › Install Extension (the `.mcpb` bundle from the bridge repo), or add `{"mcpServers":{"premiere-pro":{"command":"premiere-pro-mcp"}}}` to `claude_desktop_config.json`. Claude Code: `/plugin marketplace add leancoderkavy/premiere-pro-mcp` then `/plugin install premiere-pro@premiere-pro-mcp`. Restart Premiere, open Window › Extensions › MCP for Adobe Premiere Pro, start a new Claude session.
+
+The Hivemind checks for the bridge on first run and walks you through this if it's missing, so you can also just paste the skills and ask Claude to edit something.
+
+**3. Panels with no API** (Animation Composer, Essential Sound, Track Mixer, the Frame.io panel) are driven with computer use. Claude asks for app access the first time it needs it.
+
+## Setup, the rest
+
+1. Put `log/Edit-Log.md` on the drive your footage lives on and set its path in `video-editor-hivemind` section 0.
+2. Copy `format-template` to a new skill per format you cut. Fill in only what is different about that format. Leave the examples as reading material.
+3. Replace every `<DRIVE>`, `<channel>`, `<main display name>` placeholder, and rewrite Hivemind section 9 (preferences) in your own words.
 
 ## Credits
 

@@ -9,6 +9,19 @@ Base layer for all of the creator's Claude-driven edits. Format skills (`example
 
 The first version of this file was seeded by scouring X for the best and most-shared Claude video-editing capabilities and folding them in. Step 6 below is how that keeps happening: every new capability the creator sends lands here once and cascades to every format.
 
+## First run: check the bridge before anything else
+
+These skills drive Premiere through the open-source **leancoderkavy premiere-pro-mcp** (a local MCP server plus a CEP panel inside Premiere; MIT; https://github.com/leancoderkavy/premiere-pro-mcp). On the first run in any session, before touching the timeline:
+
+1. Check whether Premiere bridge tools are present (`verify_premiere_connection`, `get_premiere_state`, or any `premiere-pro` tool). If they are, carry on.
+2. If they are not, **stop and walk the creator through the install**, step by step, and don't pretend to edit without it:
+   - `npm install -g premiere-pro-mcp`
+   - quit Premiere fully, then `premiere-pro-mcp --install-cep`
+   - `premiere-pro-mcp --doctor` to check the setup
+   - add the server to the client: Claude Desktop → Settings › Extensions › Advanced settings › Install Extension (the `.mcpb` bundle from the repo), or `claude_desktop_config.json` with `{"mcpServers":{"premiere-pro":{"command":"premiere-pro-mcp"}}}`; Claude Code → `/plugin marketplace add leancoderkavy/premiere-pro-mcp` then `/plugin install premiere-pro@premiere-pro-mcp`
+   - restart Premiere, open Window › Extensions › MCP for Adobe Premiere Pro, start a new Claude session, then come back here.
+3. Panels with no API (Animation Composer, Essential Sound, Track Mixer, Frame.io) use computer use; ask for app access the first time it is needed.
+
 ## 0. The learning loop (the creator's standing instruction)
 
 > "every time you learn something new, permanently add it to the skill." (the creator, 2026-10-21)
