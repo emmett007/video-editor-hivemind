@@ -1,6 +1,6 @@
 ---
 name: video-editor-hivemind
-description: The shared skill every video-format skill loads first: learning loop and edit log, standing rules, Frame.io delivery and revision rounds, b-roll sourcing, Animation Composer, bridge and computer-use gotchas, general preferences, borrowed craft rules. Load it directly for any editing question that isn't tied to one format.
+description: The shared skill every video-format skill loads first: learning loop and edit log, capabilities index, standing rules, Frame.io delivery and revision rounds, b-roll sourcing, Animation Composer, Premiere bridge and computer-use gotchas, motion/3D/audio toolkit, borrowed craft rules. Load it directly for any editing question, whatever the format.
 ---
 
 # Video Editor Hivemind (Premiere Pro)
@@ -41,7 +41,7 @@ From `device_bash` it's `"$HOME/mnt/<channel>/Claude outputs/Edit-Log.md"`. Run 
 5. **After a human editor finishes a job**, study the finished timeline itself, not just the export (section 4, "Learning from a finished timeline"), and turn every difference into a log line.
 6. **Integrating a new capability the creator sends** (an X post, a repo, a skill, a tool). Standing job, no need for the creator to specify where it goes:
    1. Pull the full text/code down and save it verbatim to `Claude outputs/<slug>.md` (or a folder) so nothing is lost if the post disappears. X blocks fetches from the sandbox: use Chrome on the creator's laptop.
-   2. Sort it: a **tool or method** (bridge command, QA script, model, Frame.io trick) or a **craft rule that applies to every format** → Hivemind. A rule for **one frame shape or one kind of video** → that format's skill; say which one was picked so they can overrule it. A **paid service, not a skill** → one log line, nothing else.
+   2. **Judge it against every format, current and plausible** (long-form, shorts, ads, product spots, explainers, podcast clips…), never only the job in hand. Then sort it: a **tool or method** (bridge command, QA script, model, Frame.io trick) or a **craft rule that applies to every format** → Hivemind. A rule for **one frame shape or one kind of video** → that format's skill; say which one was picked so they can overrule it. A **paid service, not a skill** → one log line, nothing else.
    3. Add a row to the **capabilities index** (section 1) saying when to reach for it. Knowing it exists is not the same as using it at the right step.
    4. **Walk every format recipe once** and, at each step the capability changes, add a one-line pointer to the Hivemind section (never a copy of the method). If no step changes, say so and leave the recipes alone.
    5. Propose the cards (the Hivemind, plus each format touched), append the log line, tell the creator what landed where.
@@ -71,8 +71,22 @@ When the creator asks for an edit, pick the format skill, load it, and it will t
 | Creator Edit Playbook (claims file, no-flicker, QA pass, thumbnails, titles) | Before graphics (claims), before calling a cut done (QA), when asked for thumbnails or copy | section 10 |
 | Independent reviewer agent | Every final, before delivery: a fresh agent grades against the format's checklist | section 10 |
 | Face detect on exported frames | Any reframe (shorts, punch-ins) to confirm where the creator's face landed | section 7 |
+| Remotion + Remotion Skills (official agent skills) | Programmatic or data-driven motion graphics: animated charts, lower thirds, kinetic captions, end cards, templated versions of one spot | section 11 |
+| Manim | Animated diagrams, equations, step-by-step explainers that draw themselves | section 11 |
+| Anime.js / Motion | Web-style UI animation: app or website demos, layout transitions, animated interface mockups | section 11 |
+| Lottie | Lightweight vector animations (icons, stickers, logo stings) that play in Remotion and come out of AE via Bodymovin | section 11 |
+| Blender MCP | Real 3D: product shots, logo reveals, 3D scene blocking driven by Claude | section 11 |
+| Three.js stack (three.js, GPU pathtracer, postprocessing, three.quarks, Jolt) | Browser-rendered 3D with realistic light, bloom/DOF/grade, particles, physics, rendered through Remotion | section 11 |
+| Tweakpane | Live sliders while designing a 3D or motion scene with the creator watching | section 11 |
+| ComfyUI | Generated b-roll, backgrounds, textures, plates. Never the creator's likeness | section 11 |
+| CosyVoice | Multilingual voiceover and localized versions. Never a clone of the creator's voice | section 11 |
+| librosa | Beat maps for music-synced cuts or animation outside Premiere (inside Premiere use the bridge's `detect_beats`) | section 11 |
+| WhisperX | Caption-grade word timing: .srt files, kinetic text, word-accurate cut points | section 11 |
+| OBS Studio | Screen capture for tutorials, demos, software walkthroughs | section 11 |
+| LosslessCut / `ffmpeg -c copy` | Trimming huge raw files before import without re-encoding | section 11 |
+| FFmpeg | Encoding, delivery, loudness and QA checks | section 11 |
 
-**Inheritance runs one way**: every format skill loads this file; no format skill is built on another one. **New format**: start from the blank template (`skills/format-template`, or `Claude outputs/format-skill-TEMPLATE.md` on the drive), fill in only what is different about that format, propose it as a new skill, and add a row to the table above. Never copy content from `example-lsn-longform` or `example-lsn-shorts` into a new format; if a rule applies to both, it belongs here.
+**Inheritance runs one way**: every format skill loads this file; no format skill is built on another one. **New format**: start from the blank template (`skills/format-template`, or `Claude outputs/format-skill-TEMPLATE.md` on the drive) (sections: where things live, job setup, recipe, preferences, finish checklist, delivery), fill in only what is different about that format, propose it as a new skill, and add a row to the table above. Never copy content from `example-lsn-longform` or `example-lsn-shorts` into a new format; if a rule applies to both, it belongs here.
 
 ## 2. Standing rules
 
@@ -192,6 +206,7 @@ AC has no scripting API, so use **computer use** on its panel. The panel is a ta
 - **Two displays.** Premiere's main window is on **"<main display name>"**; the Program monitor is on **"<second display name>"**, which `computer_screenshot` picks by default. Run `computer_switch_display "<main display name>"` before display-scope work.
 - **Main window gone from the list**: only an off-Space "Save Project" / "Import Files" window shows. `computer_app_bring_to_current_space` on that window brings the main window back (it may time out, but the main window is back on the next `list_windows`). A bridge save can trigger this too.
 - Native modals ("Project Modified", Save dialogs) ignore background clicks; they need full-screen control.
+- **Masks in Premiere 2026: Program Monitor Clip / Frame toggle** (next to the Fit dropdown). In **Clip** mode (default) a mask is clip-wide and automated: dragging vertices reshapes it on every frame and never creates a Path keyframe. Hand-keyframing a mask needs **Frame** mode (a background click on "Frame" works). Moving or scaling the whole mask writes to the mask's Transform group, which has its own stopwatches. Background drags in the Program Monitor don't reach the mask; the creator drags, or ask for full control.
 - **Essential Sound** (background mode works): with the clips selected, the Edit tab shows "Multiple Clips Selected", the Dialogue tag, and a Loudness section with Auto-Match. Click Auto-Match, wait ~15 s, screenshot to read the confirmation.
 - **Audio Track Mixer inserts** need full-screen control (`computer_request_full_control`), because the slots are pop-up menus:
   1. Click the ">" at the mixer's top-left to show effects and sends.
@@ -225,3 +240,22 @@ This structure pairs well with Jonah Blake's **Creator Edit Playbook** (his X po
 - Phone previews under 30 MB go out first.
 
 Add your own borrowed sources the same way: credit, link, one-line principles, pointer to your saved copy.
+
+## 11. Motion, 3D and audio toolkit (open source)
+
+Seeded from @e1genqq's list of 20 open-source tools (https://x.com/e1genqq/status/2116270712390316375). None is installed by default: install on the first job that needs it, note the install command in the log, and render outputs into the job's GFX folder so Premiere imports them like any other asset.
+
+- **Remotion** (`remotion-dev/remotion`) and **Remotion Skills** (`remotion-dev/skills`, Remotion's official skills for coding agents): React components render to ProRes 4444 with alpha for overlays. `@remotion/three` and `@remotion/lottie` bring in the Three.js and Lottie items below.
+- **Manim** (ManimCommunity): Python; renders explainer animations (curves that draw, equations that transform, diagrams that build). Export with a transparent background for overlays.
+- **Anime.js** and **Motion** (motiondivision): timeline and layout animation for web-style UI; render inside Remotion or a headless browser.
+- **Lottie** (airbnb): play `.json` animations in Remotion; export from After Effects with Bodymovin.
+- **Blender MCP**: Claude builds and edits Blender scenes over MCP. Blender must be installed and the add-on running. For 3D product shots and logo reveals; render image sequences or ProRes.
+- **Three.js stack**: three.js for scenes and camera moves, three-gpu-pathtracer for realistic light, pmndrs postprocessing for bloom, DOF and grade, three.quarks for particles, Jolt Physics for collisions. Use it when a format needs 3D without leaving the Remotion pipeline.
+- **Tweakpane**: live parameter panel while designing a scene, so the creator can tune values before render.
+- **ComfyUI**: node-based image and video generation for b-roll, plates and textures. Hard limit: never generate or alter the creator's face or body. Follow each format's own AI-disclosure rules.
+- **CosyVoice** (Qwen): multilingual TTS for localized versions or non-host voiceover. Hard limit: never clone the creator's voice. Label AI voice where platforms require it.
+- **librosa**: beat and onset detection in Python for cuts or animation synced to music outside Premiere.
+- **WhisperX**: word-level forced alignment. Use it for `.srt` captions and kinetic type when the default transcription's word times aren't tight enough.
+- **OBS Studio**: screen and app capture for walkthroughs and demos.
+- **LosslessCut** / `ffmpeg -ss … -to … -c copy`: cut long raw files down before import, without re-encoding.
+- **FFmpeg**: encode, deliver, check loudness (`ebur128`), contact sheets, flash and sync checks (section 10).

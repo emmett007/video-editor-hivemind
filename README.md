@@ -8,10 +8,12 @@ Built and used on Longevity Science News. Claude does the rough cut (take select
 
 One **Hivemind** skill holds everything that is true for every video you cut: tool gotchas, delivery, QA, your standing preferences, and a learning loop. One **format** skill per kind of video (a 16:9 episode, a vertical short, an ad) holds only what is different about that format: frame size, layout numbers, pacing, brand assets. Format skills load the Hivemind first, so anything that lands in it is live in every format the next time it runs.
 
+Why it matters: every show or format you edit with Claude needs its own skill, with its own branding, animation, length, colors and footage. Without a shared structure, every new skill you find on X has to be rebuilt into each of them. With the Hivemind you add it once and each format picks up the parts that apply to it.
+
 Three habits make it compound:
 
 1. **A living log on your drive.** Skills can only change through a review card, so every lesson (a correction, a tool failure, a workaround, a preference) is appended to a plain markdown log the moment it happens, tagged with the skill it belongs to. Every session starts by reading the log. Periodically the log is folded into the skill files.
-2. **A capabilities index in the Hivemind.** Knowing a tool exists is not the same as reaching for it at the right step. Every capability gets a row saying when to use it, and every new one triggers a walk through the format recipes to leave a pointer where it changes a step.
+2. **A capabilities index in the Hivemind.** It ships with the Premiere bridge, Frame.io delivery, QA and a motion, 3D and audio toolkit (Remotion, Manim, Blender MCP, Three.js, Lottie, WhisperX, FFmpeg and more). Knowing a tool exists is not the same as reaching for it at the right step. Every capability gets a row saying when to use it, and every new one triggers a walk through the format recipes to leave a pointer where it changes a step.
 3. **One-way inheritance.** Hivemind → format, never format → format. New formats start from the blank template, not from a copy of an existing one.
 
 ## What's here
